@@ -60,7 +60,9 @@ void VideoPlayer::stopVideo() {
 }
 
 void VideoPlayer::playRandomVideo() {
-  std::cout << "playRandomVideo needs implementation" << std::endl;
+  unsigned long i = rand(); 
+  Video randomVideo = mVideoLibrary.getVideos()[i % mVideoLibrary.getVideos().size()];
+  playVideo(randomVideo.getVideoId());
 }
 
 void VideoPlayer::pauseVideo() {
