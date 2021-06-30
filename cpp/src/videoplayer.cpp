@@ -3,6 +3,8 @@
 #include <iostream>
 #include <algorithm>
 
+using namespace std;
+
 void VideoPlayer::numberOfVideos() {
   std::cout << mVideoLibrary.getVideos().size() << " videos in the library"
             << std::endl;
@@ -14,43 +16,46 @@ bool videoComparer (Video i, Video j) {
 }
 
 void VideoPlayer::showAllVideos() {
-  std::cout << "Here's a list of all available videos:" << std::endl;
+  cout << "Here's a list of all available videos:" << endl;
 
   // get videos & sort by title
   auto sortedVideos = mVideoLibrary.getVideos();
-  std::sort (sortedVideos.begin(), sortedVideos.end(), videoComparer);
+  sort (sortedVideos.begin(), sortedVideos.end(), videoComparer);
 
   for (auto &video : sortedVideos) {
-    std::cout << "  " << video.getTitle() << " (" << video.getVideoId() << ") [";
+    cout << "  " << video.getTitle() << " (" << video.getVideoId() << ") [";
 
     auto tagIter = video.getTags().begin();
     for (; tagIter != video.getTags().end(); tagIter++)
     {
       // only prepend a space on the second++ tag
-      if (tagIter != video.getTags().begin()) std::cout << " ";
-      std::cout << *tagIter;
+      if (tagIter != video.getTags().begin()) cout << " ";
+      cout << *tagIter;
     }
 
-    std::cout << "]" << std::endl;
+    cout << "]" << endl;
   }
 }
 
 const Video *currentVideo = nullptr;
 
-void VideoPlayer::playVideo(const std::string& videoId) {
+void VideoPlayer::playVideo(const string& videoId) {
   const Video *foundVideo = mVideoLibrary.getVideo(videoId);
 
   // if video was found
   if (foundVideo != nullptr) {
-    if (currentVideo != nullptr) std::cout << "Stopping video: " << currentVideo->getTitle() << std::endl;
-    std::cout << "Playing video: " << foundVideo->getTitle() << std::endl;
+    if (currentVideo != nullptr) cout << "Stopping video: " << currentVideo->getTitle() << endl;
+    cout << "Playing video: " << foundVideo->getTitle() << endl;
     currentVideo = foundVideo; // store in memory
   }
-  else std::cout << "Cannot play video: Video does not exist" << std::endl;
+  else cout << "Cannot play video: Video does not exist" << endl;
 }
 
 void VideoPlayer::stopVideo() {
-  std::cout << "stopVideo needs implementation" << std::endl;
+  if (currentVideo != nullptr) {
+    cout << "Stopping video: " << currentVideo->getTitle() << endl;
+  }
+  else cout << "Cannot stop video: No video is currently playing" << endl;
 }
 
 void VideoPlayer::playRandomVideo() {
