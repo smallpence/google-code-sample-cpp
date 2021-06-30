@@ -203,11 +203,27 @@ void VideoPlayer::removeFromPlaylist(const std::string& playlistName,
 }
 
 void VideoPlayer::clearPlaylist(const std::string& playlistName) {
-  std::cout << "clearPlaylist needs implementation" << std::endl;
+  string playlistNameLower = strToLower(playlistName);
+
+  // if playlist exists
+  if (playlists.count(playlistNameLower) > 0) {
+    VideoPlaylist foundPlaylist = playlists.at(playlistNameLower);
+
+    foundPlaylist.getVideos()->clear();
+    cout << "Successfully removed all videos from " << foundPlaylist.getTitle() << endl;
+  }
+  else cout << "Cannot clear playlist " << playlistName << ": Playlist does not exist" << endl;
 }
 
 void VideoPlayer::deletePlaylist(const std::string& playlistName) {
-  std::cout << "deletePlaylist needs implementation" << std::endl;
+  string playlistNameLower = strToLower(playlistName);
+
+  // if playlist exists
+  if (playlists.count(playlistNameLower) > 0) {
+    playlists.erase(playlistNameLower);
+    cout << "Deleted playlist: " << playlistName << endl;
+  }
+  else cout << "Cannot delete playlist " << playlistName << ": Playlist does not exist" << endl;
 }
 
 void VideoPlayer::searchVideos(const std::string& searchTerm) {
