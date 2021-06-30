@@ -1,14 +1,36 @@
 #include "videoplayer.h"
 
 #include <iostream>
+#include <algorithm>
 
 void VideoPlayer::numberOfVideos() {
   std::cout << mVideoLibrary.getVideos().size() << " videos in the library"
             << std::endl;
 }
 
+bool videoComparer (Video i, Video j) {
+  return i.getTitle().compare(j.getTitle()) < 0;
+}
+
 void VideoPlayer::showAllVideos() {
-  std::cout << "showAllVideos needs implementation" << std::endl;
+  // std::cout << "showAllVideos needs implementation" << std::endl;
+  std::cout << "Here's a list of all available videos:" << std::endl;
+
+  auto sortedVideos = mVideoLibrary.getVideos();
+  std::sort (sortedVideos.begin(), sortedVideos.end(), videoComparer);
+
+  for (auto &video : sortedVideos) {
+    std::cout << "  " << video.getTitle() << " (" << video.getVideoId() << ") [";
+
+    auto tagIter = video.getTags().begin();
+    for (; tagIter != video.getTags().end(); tagIter++)
+    {
+      if (tagIter != video.getTags().begin()) std::cout << " ";
+      std::cout << *tagIter;
+    }
+
+    std::cout << "]" << std::endl;
+  }
 }
 
 void VideoPlayer::playVideo(const std::string& videoId) {
