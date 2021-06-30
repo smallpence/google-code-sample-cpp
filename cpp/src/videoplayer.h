@@ -10,6 +10,8 @@
 class VideoPlayer {
  private:
   VideoLibrary mVideoLibrary;
+  const Video *currentVideo = nullptr;
+  bool paused = false;
 
  public:
   VideoPlayer() = default;

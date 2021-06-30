@@ -5,9 +5,6 @@
 
 using namespace std;
 
-const Video *currentVideo = nullptr;
-bool paused = false;
-
 void VideoPlayer::numberOfVideos() {
   std::cout << mVideoLibrary.getVideos().size() << " videos in the library"
             << std::endl;
