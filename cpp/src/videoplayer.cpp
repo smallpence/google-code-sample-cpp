@@ -8,14 +8,15 @@ void VideoPlayer::numberOfVideos() {
             << std::endl;
 }
 
+// function to compare title of video
 bool videoComparer (Video i, Video j) {
   return i.getTitle().compare(j.getTitle()) < 0;
 }
 
 void VideoPlayer::showAllVideos() {
-  // std::cout << "showAllVideos needs implementation" << std::endl;
   std::cout << "Here's a list of all available videos:" << std::endl;
 
+  // get videos & sort by title
   auto sortedVideos = mVideoLibrary.getVideos();
   std::sort (sortedVideos.begin(), sortedVideos.end(), videoComparer);
 
@@ -25,6 +26,7 @@ void VideoPlayer::showAllVideos() {
     auto tagIter = video.getTags().begin();
     for (; tagIter != video.getTags().end(); tagIter++)
     {
+      // only prepend a space on the second++ tag
       if (tagIter != video.getTags().begin()) std::cout << " ";
       std::cout << *tagIter;
     }
@@ -38,10 +40,11 @@ const Video *currentVideo = nullptr;
 void VideoPlayer::playVideo(const std::string& videoId) {
   const Video *foundVideo = mVideoLibrary.getVideo(videoId);
 
+  // if video was found
   if (foundVideo != nullptr) {
     if (currentVideo != nullptr) std::cout << "Stopping video: " << currentVideo->getTitle() << std::endl;
     std::cout << "Playing video: " << foundVideo->getTitle() << std::endl;
-    currentVideo = foundVideo;
+    currentVideo = foundVideo; // store in memory
   }
   else std::cout << "Cannot play video: Video does not exist" << std::endl;
 }
