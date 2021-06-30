@@ -54,6 +54,7 @@ void VideoPlayer::playVideo(const string& videoId) {
 void VideoPlayer::stopVideo() {
   if (currentVideo != nullptr) {
     cout << "Stopping video: " << currentVideo->getTitle() << endl;
+    currentVideo = nullptr;
   }
   else cout << "Cannot stop video: No video is currently playing" << endl;
 }
