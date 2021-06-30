@@ -33,8 +33,17 @@ void VideoPlayer::showAllVideos() {
   }
 }
 
+const Video *currentVideo = nullptr;
+
 void VideoPlayer::playVideo(const std::string& videoId) {
-  std::cout << "playVideo needs implementation" << std::endl;
+  const Video *foundVideo = mVideoLibrary.getVideo(videoId);
+
+  if (foundVideo != nullptr) {
+    if (currentVideo != nullptr) std::cout << "Stopping video: " << currentVideo->getTitle() << std::endl;
+    std::cout << "Playing video: " << foundVideo->getTitle() << std::endl;
+    currentVideo = foundVideo;
+  }
+  else std::cout << "Cannot play video: Video does not exist" << std::endl;
 }
 
 void VideoPlayer::stopVideo() {

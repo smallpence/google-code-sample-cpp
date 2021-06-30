@@ -44,7 +44,7 @@ std::vector<Video> VideoLibrary::getVideos() const {
 const Video* VideoLibrary::getVideo(const std::string& videoId) const {
   const auto found = mVideos.find(videoId);
   if (found == mVideos.end()) {
-    std::cout << "Video not found in video library" << std::endl;
+    // std::cout << "Video not found in video library" << std::endl;
     return nullptr;
   } else {
     return &(found->second);
