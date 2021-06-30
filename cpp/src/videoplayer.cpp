@@ -5,6 +5,9 @@
 
 using namespace std;
 
+const Video *currentVideo = nullptr;
+bool paused = false;
+
 void VideoPlayer::numberOfVideos() {
   std::cout << mVideoLibrary.getVideos().size() << " videos in the library"
             << std::endl;
@@ -37,8 +40,6 @@ void VideoPlayer::showAllVideos() {
   }
 }
 
-const Video *currentVideo = nullptr;
-
 void VideoPlayer::playVideo(const string& videoId) {
   const Video *foundVideo = mVideoLibrary.getVideo(videoId);
 
@@ -47,6 +48,7 @@ void VideoPlayer::playVideo(const string& videoId) {
     if (currentVideo != nullptr) cout << "Stopping video: " << currentVideo->getTitle() << endl;
     cout << "Playing video: " << foundVideo->getTitle() << endl;
     currentVideo = foundVideo; // store in memory
+    paused = false; // assert non paused
   }
   else cout << "Cannot play video: Video does not exist" << endl;
 }
@@ -66,7 +68,15 @@ void VideoPlayer::playRandomVideo() {
 }
 
 void VideoPlayer::pauseVideo() {
-  std::cout << "pauseVideo needs implementation" << std::endl;
+  // if theres a video playing
+  if (currentVideo != nullptr) {
+    if (!paused) {
+      cout << "Pausing video: " << currentVideo->getTitle() << endl;
+      paused = true;
+    }
+    else cout << "Video already paused: " << currentVideo->getTitle() << endl;
+  }
+  else cout << "Cannot pause video: No video is currently playing" << endl;
 }
 
 void VideoPlayer::continueVideo() {
