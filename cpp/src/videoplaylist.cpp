@@ -4,6 +4,6 @@ const std::string& VideoPlaylist::VideoPlaylist::getTitle() const {
     return mTitle;
 }
 
-const std::vector<Video>& VideoPlaylist::VideoPlaylist::getVideos() const {
+std::unordered_set<std::string>* VideoPlaylist::VideoPlaylist::getVideos() const {
     return mVidoes;
 }

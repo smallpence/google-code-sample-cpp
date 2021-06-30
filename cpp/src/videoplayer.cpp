@@ -125,7 +125,25 @@ void VideoPlayer::createPlaylist(const std::string& playlistName) {
 
 void VideoPlayer::addVideoToPlaylist(const std::string& playlistName,
                                      const std::string& videoId) {
-  std::cout << "addVideoToPlaylist needs implementation" << std::endl;
+  string playlistNameLower = strToLower(playlistName);
+  // if playlist exists
+  if (playlists.count(playlistNameLower) > 0) {
+    const Video *foundVideo = mVideoLibrary.getVideo(videoId);
+
+    // if could find a video
+    if (foundVideo != nullptr) {
+      VideoPlaylist foundPlaylist = playlists.at(playlistNameLower);
+      
+      // if playlist doesnt contain video
+      if (foundPlaylist.getVideos()->count(videoId) == 0) {
+        foundPlaylist.getVideos()->insert(videoId);
+        cout << "Added video to " << playlistName << ": " << foundVideo->getTitle() << endl;
+      }
+      else cout << "Cannot add video to " << playlistName << ": " << "Video already added" << endl;
+    }
+    else cout << "Cannot add video to " << playlistName << ": " << "Video does not exist" << endl;
+  }
+  else cout << "Cannot add video to " << playlistName << ": " << "Playlist does not exist" << endl;
 }
 
 void VideoPlayer::showAllPlaylists() {
