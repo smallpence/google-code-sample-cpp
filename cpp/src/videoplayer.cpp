@@ -181,7 +181,25 @@ void VideoPlayer::showPlaylist(const std::string& playlistName) {
 
 void VideoPlayer::removeFromPlaylist(const std::string& playlistName,
                                      const std::string& videoId) {
-  std::cout << "removeFromPlaylist needs implementation" << std::endl;
+  string playlistNameLower = strToLower(playlistName);
+  // if playlist exists
+  if (playlists.count(playlistNameLower) > 0) {
+    const Video *foundVideo = mVideoLibrary.getVideo(videoId);
+
+    // if could find a video
+    if (foundVideo != nullptr) {
+      VideoPlaylist foundPlaylist = playlists.at(playlistNameLower);
+      
+      // if playlist contains video
+      if (foundPlaylist.getVideos()->count(videoId) > 0) {
+        foundPlaylist.getVideos()->erase(videoId);
+        cout << "Removed video from " << playlistName << ": " << foundVideo->getTitle() << endl;
+      }
+      else cout << "Cannot remove video from " << playlistName << ": " << "Video is not in playlist" << endl;
+    }
+    else cout << "Cannot remove video from " << playlistName << ": " << "Video does not exist" << endl;
+  }
+  else cout << "Cannot remove video from " << playlistName << ": " << "Playlist does not exist" << endl;
 }
 
 void VideoPlayer::clearPlaylist(const std::string& playlistName) {
