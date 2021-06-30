@@ -116,7 +116,7 @@ void VideoPlayer::createPlaylist(const std::string& playlistName) {
   if (playlists.count(strToLower(playlistName)) == 0) {
     // place in slot designated by lower case name (to make non caps sensitive)
     // but also store the original name with the playlist
-    playlists.insert({strToLower(playlistName), VideoPlaylist(playlistName)});
+    playlists.insert({strToLower(playlistName), VideoPlaylist(playlistName, new vector<string>())});
     
     cout << "Successfully created new playlist: " << playlistName << endl;
   }
@@ -132,11 +132,11 @@ void VideoPlayer::addVideoToPlaylist(const std::string& playlistName,
 
     // if could find a video
     if (foundVideo != nullptr) {
-      VideoPlaylist foundPlaylist = playlists.at(playlistNameLower);
-      
+      vector<string>* videoIds = playlists.at(playlistNameLower).getVideos();
+
       // if playlist doesnt contain video
-      if (foundPlaylist.getVideos()->count(videoId) == 0) {
-        foundPlaylist.getVideos()->insert(videoId);
+      if (find(videoIds->begin(), videoIds->end(), videoId) == videoIds->end()) {
+        videoIds->insert(videoIds->end(), videoId);
         cout << "Added video to " << playlistName << ": " << foundVideo->getTitle() << endl;
       }
       else cout << "Cannot add video to " << playlistName << ": " << "Video already added" << endl;
@@ -164,7 +164,7 @@ void VideoPlayer::showPlaylist(const std::string& playlistName) {
   if (playlists.count(playlistNameLower) > 0) {
     cout << "Showing playlist: " << playlistName << endl;
 
-    // display message if emoty
+    // display message if empty
     if (playlists.at(playlistNameLower).getVideos()->size() == 0)
       cout << "  No videos here yet" << endl;
 
@@ -188,11 +188,11 @@ void VideoPlayer::removeFromPlaylist(const std::string& playlistName,
 
     // if could find a video
     if (foundVideo != nullptr) {
-      VideoPlaylist foundPlaylist = playlists.at(playlistNameLower);
+      vector<string>* videoIds = playlists.at(playlistNameLower).getVideos();
       
       // if playlist contains video
-      if (foundPlaylist.getVideos()->count(videoId) > 0) {
-        foundPlaylist.getVideos()->erase(videoId);
+      if (find(videoIds->begin(), videoIds->end(), videoId) != videoIds->end()) {
+        videoIds->erase(remove(videoIds->begin(), videoIds->end(), videoId), videoIds->end());
         cout << "Removed video from " << playlistName << ": " << foundVideo->getTitle() << endl;
       }
       else cout << "Cannot remove video from " << playlistName << ": " << "Video is not in playlist" << endl;
