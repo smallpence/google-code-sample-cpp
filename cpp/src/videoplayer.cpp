@@ -18,6 +18,21 @@ bool videoComparer (Video i, Video j) {
   return i.getTitle().compare(j.getTitle()) < 0;
 }
 
+// function to print a video (with no newlines)
+void printVideo(const Video &video) {
+  cout << video.getTitle() << " (" << video.getVideoId() << ") [";
+
+  auto tagIter = video.getTags().begin();
+  for (; tagIter != video.getTags().end(); tagIter++)
+  {
+    // only prepend a space on the second++ tag
+    if (tagIter != video.getTags().begin()) cout << " ";
+    cout << *tagIter;
+  }
+
+  cout << "]";
+}
+
 void VideoPlayer::showAllVideos() {
   cout << "Here's a list of all available videos:" << endl;
 
@@ -26,17 +41,11 @@ void VideoPlayer::showAllVideos() {
   sort (sortedVideos.begin(), sortedVideos.end(), videoComparer);
 
   for (auto &video : sortedVideos) {
-    cout << "  " << video.getTitle() << " (" << video.getVideoId() << ") [";
+    cout << " ";
 
-    auto tagIter = video.getTags().begin();
-    for (; tagIter != video.getTags().end(); tagIter++)
-    {
-      // only prepend a space on the second++ tag
-      if (tagIter != video.getTags().begin()) cout << " ";
-      cout << *tagIter;
-    }
+    printVideo(video);
 
-    cout << "]" << endl;
+    cout << endl;
   }
 }
 
@@ -92,7 +101,16 @@ void VideoPlayer::continueVideo() {
 }
 
 void VideoPlayer::showPlaying() {
-  std::cout << "showPlaying needs implementation" << std::endl;
+  if (currentVideo != nullptr) {
+    cout << "Currently playing: ";
+
+    printVideo(*currentVideo);
+
+    if (paused) cout << " - PAUSED";
+
+    cout << endl;
+  }
+  else cout << "No video is currently playing" << endl;
 }
 
 void VideoPlayer::createPlaylist(const std::string& playlistName) {
