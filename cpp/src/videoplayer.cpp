@@ -147,11 +147,36 @@ void VideoPlayer::addVideoToPlaylist(const std::string& playlistName,
 }
 
 void VideoPlayer::showAllPlaylists() {
-  std::cout << "showAllPlaylists needs implementation" << std::endl;
+  // if there are playlists
+  if (playlists.size() > 0) {
+    cout << "Showing all playlists:" << endl;
+    for (auto pair : playlists) {
+      cout << pair.second.getTitle() << endl;
+    }
+  }
+  else cout << "No playlists exist yet" << endl;
 }
 
 void VideoPlayer::showPlaylist(const std::string& playlistName) {
-  std::cout << "showPlaylist needs implementation" << std::endl;
+  string playlistNameLower = strToLower(playlistName);
+
+  // if playlist exists
+  if (playlists.count(playlistNameLower) > 0) {
+    cout << "Showing playlist: " << playlistName << endl;
+
+    // display message if emoty
+    if (playlists.at(playlistNameLower).getVideos()->size() == 0)
+      cout << "  No videos here yet" << endl;
+
+    for (auto videoID : *playlists.at(playlistNameLower).getVideos()) {
+      cout << "  ";
+      
+      printVideo(*mVideoLibrary.getVideo(videoID));
+
+      cout << endl;
+    }
+  }
+  else cout << "Cannot show playlist " << playlistName << ": Playlist does not exist" << endl;
 }
 
 void VideoPlayer::removeFromPlaylist(const std::string& playlistName,
