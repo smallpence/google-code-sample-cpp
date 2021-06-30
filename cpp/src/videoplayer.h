@@ -1,8 +1,10 @@
 #pragma once
 
 #include <string>
+#include <unordered_map>
 
 #include "videolibrary.h"
+#include "videoplaylist.h"
 
 /**
  * A class used to represent a Video Player.
@@ -10,8 +12,14 @@
 class VideoPlayer {
  private:
   VideoLibrary mVideoLibrary;
+
+  // part 1
   const Video *currentVideo = nullptr;
   bool paused = false;
+
+  // part 2
+  // map between lower case name & playlist object
+  std::unordered_map<std::string, VideoPlaylist> playlists;
 
  public:
   VideoPlayer() = default;

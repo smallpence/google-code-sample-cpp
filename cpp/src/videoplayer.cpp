@@ -1,4 +1,5 @@
 #include "videoplayer.h"
+#include "helper.h"
 
 #include <iostream>
 #include <algorithm>
@@ -111,7 +112,15 @@ void VideoPlayer::showPlaying() {
 }
 
 void VideoPlayer::createPlaylist(const std::string& playlistName) {
-  std::cout << "createPlaylist needs implementation" << std::endl;
+  // if none stored with this name
+  if (playlists.count(strToLower(playlistName)) == 0) {
+    // place in slot designated by lower case name (to make non caps sensitive)
+    // but also store the original name with the playlist
+    playlists.insert({strToLower(playlistName), VideoPlaylist(playlistName)});
+    
+    cout << "Successfully created new playlist: " << playlistName << endl;
+  }
+  else cout << "Cannot create playlist: A playlist with the same name already exists" << endl;
 }
 
 void VideoPlayer::addVideoToPlaylist(const std::string& playlistName,

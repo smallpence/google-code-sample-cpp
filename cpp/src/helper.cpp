@@ -3,6 +3,7 @@
 #include <iostream>
 #include <sstream>
 #include <vector>
+#include <algorithm>
 
 std::string trim(std::string toTrim) {
   size_t trimPos = toTrim.find_first_not_of(" \t");
@@ -22,4 +23,9 @@ std::vector<std::string> splitlines(std::string output) {
     commandOutput.emplace_back(line);
   }
   return commandOutput;
+}
+
+std::string strToLower(std::string str) {
+  std::transform(str.begin(), str.end(), str.begin(), tolower);
+  return str;
 }
