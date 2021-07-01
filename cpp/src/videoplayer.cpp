@@ -227,7 +227,39 @@ void VideoPlayer::deletePlaylist(const std::string& playlistName) {
 }
 
 void VideoPlayer::searchVideos(const std::string& searchTerm) {
-  std::cout << "searchVideos needs implementation" << std::endl;
+  string lowerSearchTerm = strToLower(searchTerm);
+  vector<string> foundVideoIds;
+  int i = 0;
+
+  for (auto video : mVideoLibrary.getVideos()) {
+    if (strToLower(video.getTitle()).find(lowerSearchTerm) != string::npos) {
+      // display this for first result
+      if (foundVideoIds.size() == 0)
+        cout << "Here are the results for " << searchTerm << ":" << endl;
+
+      foundVideoIds.insert(foundVideoIds.end(),video.getVideoId());
+
+      cout << "  " << ++i << ") ";
+      printVideo(video);
+      cout << endl;
+    }
+  }
+
+  // if any videos were found
+  if (foundVideoIds.size() > 0) {
+    cout << "Would you like to play any of the above? If yes, specify the number of the video." << endl
+         << "If your answer is not a valid number, we will assume it's a no." << endl;
+
+    unsigned int nextVid;
+    cin >> nextVid;
+    // eats the enter otherwise this is used as a next command
+    getchar();
+
+    if (nextVid > 0 && nextVid <= foundVideoIds.size()) {
+      playVideo(foundVideoIds[nextVid-1]);
+    }
+  }
+  else cout << "No search results for " << searchTerm << endl;
 }
 
 void VideoPlayer::searchVideosWithTag(const std::string& videoTag) {
