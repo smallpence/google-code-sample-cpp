@@ -263,7 +263,41 @@ void VideoPlayer::searchVideos(const std::string& searchTerm) {
 }
 
 void VideoPlayer::searchVideosWithTag(const std::string& videoTag) {
-  std::cout << "searchVideosWithTag needs implementation" << std::endl;
+  string lowerVideoTag = strToLower(videoTag);
+  vector<string> foundVideoIds;
+  int i = 0;
+
+  for (auto video : mVideoLibrary.getVideos()) {
+    for (auto tag : video.getTags()) {
+      if (strToLower(tag) == lowerVideoTag) {
+      // display this for first result
+      if (foundVideoIds.size() == 0)
+        cout << "Here are the results for " << videoTag << ":" << endl;
+
+      foundVideoIds.insert(foundVideoIds.end(),video.getVideoId());
+
+      cout << "  " << ++i << ") ";
+      printVideo(video);
+      cout << endl;
+      }
+    }
+  }
+
+  // if any videos were found
+  if (foundVideoIds.size() > 0) {
+    cout << "Would you like to play any of the above? If yes, specify the number of the video." << endl
+         << "If your answer is not a valid number, we will assume it's a no." << endl;
+
+    unsigned int nextVid;
+    cin >> nextVid;
+    // eats the enter otherwise this is used as a next command
+    getchar();
+
+    if (nextVid > 0 && nextVid <= foundVideoIds.size()) {
+      playVideo(foundVideoIds[nextVid-1]);
+    }
+  }
+  else cout << "No search results for " << videoTag << endl;
 }
 
 void VideoPlayer::flagVideo(const std::string& videoId) {
